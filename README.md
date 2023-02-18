@@ -1,4 +1,5 @@
 # CoreDataModelInteractor
+![example workflow](https://github.com/AKoulabukhov/CoreDataModelInteractor/actions/workflows/swift.yml/badge.svg)
 
 This package contains an utility class named CoreDataInteractor which has two missing CoreData functionalities:
 - geting NSManagedObjectModel with which your store was open last time (in case of model changes in etween app versions)
