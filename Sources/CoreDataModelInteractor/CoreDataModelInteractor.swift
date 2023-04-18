@@ -58,9 +58,7 @@ public final class CoreDataModelInteractor: CoreDataModelInteractorProtocol {
     /// Please fill in feature requests to Apple to make this functionality public
     /// along with metadataForPersistentStore:
     public func getManagedObjectModel(fromSQLiteStoreAt url: URL) throws -> NSManagedObjectModel {
-        let db = try openDatabase(at: url)
-        let modelData = try getModelCacheData(from: db)
-        closeDatabase(db)
+        let modelData = try getModelCacheData(databaseUrl: url)
         let model = try decodeModel(from: modelData)
         return model
     }
@@ -116,6 +114,12 @@ public final class CoreDataModelInteractor: CoreDataModelInteractorProtocol {
 
     private func closeDatabase(_ db: OpaquePointer) {
         sqlite3_close(db)
+    }
+
+    private func getModelCacheData(databaseUrl: URL) throws -> Data {
+        let db = try openDatabase(at: databaseUrl)
+        defer { closeDatabase(db) }
+        return try getModelCacheData(from: db)
     }
 
     private func getModelCacheData(from db: OpaquePointer) throws -> Data {
